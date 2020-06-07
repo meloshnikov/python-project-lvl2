@@ -1,23 +1,31 @@
 """The main module."""
 
+import yaml
 import json
 import os
 
 
 def load(source_path):
-    """Accept the original path and returns the absolute path.
+    """Takes the original path of the file and deserialize in a file object.
 
     Args:
         source_path (str): String parameter of original path.
 
     Returns:
-        str: The return of riginal path.
+        obeject: The return a file object type json or yaml.
     """
-    return json.load(open(os.path.abspath(source_path)))
+    _, file_extension = os.path.splitext(source_path)
+    if file_extension == '.json':
+        data_file = json.load(open(os.path.abspath(source_path)))
+    elif file_extension == '.yml' or file_extension == '.yaml':
+        data_file = yaml.safe_load(open(os.path.abspath(source_path)))
+    else:
+        data_file = 'Only supported files of type JSON and YAML !'
+    return data_file
 
 
 def process(before, after):
-    """Accept two .json files and returns string of differences.
+    """Takes two objects and returns string of differences.
 
     Args:
         before (dict): Source file for comparison.
@@ -47,6 +55,6 @@ def process(before, after):
     return ''.join(comparison_result)
 
 
-NO_CHANGES = '{}: {}'
-DELETED = '- {}: {}'
-ADDED = '+ {}: {}'
+NO_CHANGES = '  {}: {}'
+DELETED = '  - {}: {}'
+ADDED = '  + {}: {}'
