@@ -13,5 +13,4 @@ def generate_diff(first_file, second_file):
     """
     before = load(first_file)
     after = load(second_file)
-    comparison_result = process(before, after)
-    print('\n'.join(comparison_result))
+    return process(before, after)

@@ -27,19 +27,24 @@ def process(before, after):
         str: The returns of string of differences.
     """
     added_key = set(after) - set(before)
-    comparison_result = ['{']
+    comparison_result = ['{\n']
     for key, value in before.items():
         if after.get(key, None) == value:
             comparison_result.append(NO_CHANGES.format(key, value))
+            comparison_result.append('\n')
         elif after.get(key, None) is None:
             comparison_result.append(DELETED.format(key, value))
+            comparison_result.append('\n')
         else:
             comparison_result.append(ADDED.format(key, after.get(key, None)))
+            comparison_result.append('\n')
             comparison_result.append(DELETED.format(key, value))
+            comparison_result.append('\n')
     for key in added_key:
         comparison_result.append(ADDED.format(key, after.get(key, None)))
+        comparison_result.append('\n')
     comparison_result.append('}')
-    return comparison_result
+    return ''.join(comparison_result)
 
 
 NO_CHANGES = '{}: {}'
