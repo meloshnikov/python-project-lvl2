@@ -12,6 +12,6 @@ def run_parse():
     parser.add_argument('first_file', type=str)
     parser.add_argument('second_file', type=str)
     parser.add_argument('-f', '--format', help='set format of output',
-                        default='plain', choices=['plain', 'human'])
+                        default='plain', choices=['plain', 'cascade', 'json'])
     args = parser.parse_args()
     print(generate_diff(args.first_file, args.second_file, args.format))

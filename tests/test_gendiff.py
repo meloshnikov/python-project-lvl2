@@ -8,11 +8,11 @@ import yaml
 from gendiff import generate_diff, load
 
 
-def test_correct_comparison_of_flat():
+def test_correct_comparison_of_cascade():
     first_file = 'tests/fixtures/t1_before.json'
     second_file = 'tests/fixtures/t1_after.json'
     result_file = 'tests/fixtures/t1_result'
-    param = 'human'
+    param = 'cascade'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)
@@ -22,7 +22,7 @@ def test_correct_comparison_of_complex():
     first_file = 'tests/fixtures/t2_before.json'
     second_file = 'tests/fixtures/t2_after.json'
     result_file = 'tests/fixtures/t2_result'
-    param = 'human'
+    param = 'cascade'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)
@@ -33,6 +33,16 @@ def test_correct_comparison_of_plain():
     second_file = 'tests/fixtures/t2_after.json'
     result_file = 'tests/fixtures/t2_result_plain'
     param = 'plain'
+    with open(os.path.abspath(result_file)) as file:
+        data_file = file.read()
+    assert data_file == generate_diff(first_file, second_file, param)
+
+
+def test_correct_comparison_of_json():
+    first_file = 'tests/fixtures/t2_before.json'
+    second_file = 'tests/fixtures/t2_after.json'
+    result_file = 'tests/fixtures/t2_result_json'
+    param = 'json'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)

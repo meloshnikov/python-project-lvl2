@@ -4,12 +4,12 @@
 
 def render_node(status, key, depth):
     depth = depth * '  '
-    if status == 'node':
-        result = NODE.format(depth, ' ', key)
-    elif status == 'added':
+    if status == 'added':
         result = NODE.format(depth, '+', key)
     elif status == 'removed':
         result = NODE.format(depth, '-', key)
+    else:
+        result = NODE.format(depth, ' ', key)
     return result
     
 

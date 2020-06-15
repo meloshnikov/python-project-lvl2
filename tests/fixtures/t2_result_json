@@ -1,0 +1,70 @@
+{
+  "common": [
+    "node",
+    {
+      "setting1": [
+        "nochanged",
+        "Value 1",
+        null
+      ],
+      "setting3": [
+        "nochanged",
+        true,
+        null
+      ],
+      "setting2": [
+        "removed",
+        "200",
+        null
+      ],
+      "setting6": [
+        "removed",
+        {
+          "key": "value"
+        },
+        null
+      ],
+      "setting4": [
+        "added",
+        "blah blah",
+        null
+      ],
+      "setting5": [
+        "added",
+        {
+          "key5": "value5"
+        },
+        null
+      ]
+    }
+  ],
+  "group1": [
+    "node",
+    {
+      "baz": [
+        "changed",
+        "bars",
+        "bas"
+      ],
+      "foo": [
+        "nochanged",
+        "bar",
+        null
+      ]
+    }
+  ],
+  "group2": [
+    "removed",
+    {
+      "abc": "12345"
+    },
+    null
+  ],
+  "group3": [
+    "added",
+    {
+      "fee": "100500"
+    },
+    null
+  ]
+}

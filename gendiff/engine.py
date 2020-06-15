@@ -27,9 +27,9 @@ def load(source_path):
 
 def process(before_data, after_data):
     diff_result = {}
-    common_items = before_data.keys() & after_data.keys()
-    removed_items = before_data.keys() - after_data.keys()
-    added_items = after_data.keys() - before_data.keys()
+    common_items = sorted(before_data.keys() & after_data.keys())
+    removed_items = sorted(before_data.keys() - after_data.keys())
+    added_items = sorted(after_data.keys() - before_data.keys())
     for key in common_items:
         value_before = before_data[key]
         value_after = after_data[key]
