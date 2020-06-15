@@ -18,7 +18,7 @@ def test_correct_comparison_of_cascade():
     assert data_file == generate_diff(first_file, second_file, param)
 
 
-def test_correct_comparison_of_complex():
+def test_comparison_of_complex_plain_json():
     first_file = 'tests/fixtures/t2_before.json'
     second_file = 'tests/fixtures/t2_after.json'
     result_file = 'tests/fixtures/t2_result'
@@ -26,23 +26,13 @@ def test_correct_comparison_of_complex():
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)
-
-
-def test_correct_comparison_of_plain():
-    first_file = 'tests/fixtures/t2_before.json'
-    second_file = 'tests/fixtures/t2_after.json'
-    result_file = 'tests/fixtures/t2_result_plain'
     param = 'plain'
+    result_file = 'tests/fixtures/t2_result_plain'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)
-
-
-def test_correct_comparison_of_json():
-    first_file = 'tests/fixtures/t2_before.json'
-    second_file = 'tests/fixtures/t2_after.json'
-    result_file = 'tests/fixtures/t2_result_json'
     param = 'json'
+    result_file = 'tests/fixtures/t2_result_json'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
     assert data_file == generate_diff(first_file, second_file, param)
