@@ -1,6 +1,6 @@
 """Compares two files and shows the differences."""
 
-from gendiff.engine import load, process
+from gendiff.engine import load, process, render, warp_act
 
 
 def generate_diff(first_file, second_file):
@@ -13,4 +13,4 @@ def generate_diff(first_file, second_file):
     """
     before = load(first_file)
     after = load(second_file)
-    return process(before, after)
+    return warp_act(render(process(before, after)))

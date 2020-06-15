@@ -6,17 +6,24 @@ import json
 import yaml
 
 from gendiff import generate_diff, load
-from gendiff.cli import run_parse
 
 
 def test_correct_comparison_of_flat():
     first_file = 'tests/fixtures/t1_before.json'
     second_file = 'tests/fixtures/t1_after.json'
     result_file = 'tests/fixtures/t1_result'
-    result_compare = generate_diff(first_file, second_file)
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
-    assert data_file == result_compare
+    assert data_file == generate_diff(first_file, second_file)
+
+
+def test_correct_comparison_of_complex():
+    first_file = 'tests/fixtures/t2_before.json'
+    second_file = 'tests/fixtures/t2_after.json'
+    result_file = 'tests/fixtures/t2_result'
+    with open(os.path.abspath(result_file)) as file:
+        data_file = file.read()
+    assert data_file == generate_diff(first_file, second_file)
 
 
 def test_of_loader_files():
@@ -31,7 +38,5 @@ def test_of_loader_files():
     assert load(path_file_txt) == data_file
 
 
-def test_of_parser():
-    pass
 
 
