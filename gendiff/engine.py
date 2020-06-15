@@ -3,7 +3,6 @@
 import yaml
 import json
 import os
-import collections
 
 
 def load(source_path):
@@ -45,54 +44,3 @@ def process(before_data, after_data):
     for key in added_items:
         diff_result[key] = ('added', after_data[key], None)
     return diff_result
-
-
-def render_node(status, key, depth):
-    depth = depth * '  '
-    if status == 'node':
-        result = NODE.format(depth, ' ', key)
-    elif status == 'added':
-        result = NODE.format(depth, '+', key)
-    elif status == 'removed':
-        result = NODE.format(depth, '-', key)
-    return result
-    
-
-def render_branch(depth, status, key, value_after, value_before=None):
-    depth = depth * '  '
-    if status == 'added':
-        result = BRANCH.format(depth, '+', key, value_after)
-    elif status == 'removed':
-        result = BRANCH.format(depth, '-', key, value_after)
-    elif status == 'changed':
-        result = BRANCH.format(depth, '+', key, value_after)
-        result += BRANCH.format(depth, '-', key, value_before)
-    else:
-        result = BRANCH.format(depth, ' ', key, value_after)
-    return result
-
-
-
-def render(diff_dic, depth=1):
-    result_list = []
-    count = 0
-    for key, value in sorted(diff_dic.items()):
-        status = value[0]
-        if isinstance(value[1], dict):
-            result_list.append(render_node(status, key, depth))
-            result_list.append(render(value[1], depth + 1))
-            result_list.append(END.format((depth * '   ')))
-        elif isinstance(value, tuple):
-            result_list.append(render_branch(depth, status, key, value[1], value[2]))
-        else:
-            result_list.append(render_branch(depth, status, key, value))
-    return ''.join(result_list)
-
-
-def warp_act(string):
-    string = '{\n' + string + '}'
-    return string 
-
-BRANCH = "{}{} {}: {}\n"
-NODE = "{}{} {}: {{ \n"
-END = "{}}}\n"

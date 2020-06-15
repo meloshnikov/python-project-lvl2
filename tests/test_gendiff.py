@@ -12,18 +12,30 @@ def test_correct_comparison_of_flat():
     first_file = 'tests/fixtures/t1_before.json'
     second_file = 'tests/fixtures/t1_after.json'
     result_file = 'tests/fixtures/t1_result'
+    param = 'human'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
-    assert data_file == generate_diff(first_file, second_file)
+    assert data_file == generate_diff(first_file, second_file, param)
 
 
 def test_correct_comparison_of_complex():
     first_file = 'tests/fixtures/t2_before.json'
     second_file = 'tests/fixtures/t2_after.json'
     result_file = 'tests/fixtures/t2_result'
+    param = 'human'
     with open(os.path.abspath(result_file)) as file:
         data_file = file.read()
-    assert data_file == generate_diff(first_file, second_file)
+    assert data_file == generate_diff(first_file, second_file, param)
+
+
+def test_correct_comparison_of_plain():
+    first_file = 'tests/fixtures/t2_before.json'
+    second_file = 'tests/fixtures/t2_after.json'
+    result_file = 'tests/fixtures/t2_result_plain'
+    param = 'plain'
+    with open(os.path.abspath(result_file)) as file:
+        data_file = file.read()
+    assert data_file == generate_diff(first_file, second_file, param)
 
 
 def test_of_loader_files():
