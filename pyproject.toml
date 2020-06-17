@@ -1,22 +1,26 @@
 [tool.poetry]
 name = "aldangold-gendiff"
-version = "0.3.1"
+version = "1.0.1"
 description = "Difference calculator"
 authors = ["aldangold <meloshnikoff@gmail.com>"]
 packages = [
   { include = "gendiff" },
 ]
 repository = "https://github.com/aldangold/python-project-lvl2"
+classifiers = [
+  "Environment :: Console"
+]
 
 [tool.poetry.scripts]
 gendiff = "gendiff.scripts.gendiff:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-wemake-python-styleguide = "^0.14.0"
-pytest = "^5.4.3"
+pyyaml = "^5.3.1"
 
 [tool.poetry.dev-dependencies]
+flake8 = "^3.8.3"
+pytest-cov = "^2.10.0"
 
 [[tool.poetry.source]]
 name = "ppt"

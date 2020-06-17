@@ -1,8 +1,7 @@
 """Compares two files and shows the differences."""
 
-from gendiff.engine import load, process
-from gendiff.format import plain, cascade, json
-#import os
+from gendiff.engine import download, process
+from gendiff.format import cascade, json, plain
 
 
 def generate_diff(first_file, second_file, parameter):
@@ -11,16 +10,16 @@ def generate_diff(first_file, second_file, parameter):
     Args:
         first_file (str): The first parameter.
         second_file (str): The second parameter.
+        parameter(str): The format output result of compare.
 
+    Returns:
+        string: The result comparing two files.
     """
-    before = load(first_file)
-    after = load(second_file)
+    before = download(first_file)
+    after = download(second_file)
     if parameter == 'plain':
         return plain.render_act(process(before, after))
     elif parameter == 'cascade':
         return cascade.warp_act(cascade.render_act(process(before, after)))
     elif parameter == 'json':
         return json.render_json(process(before, after))
-    #f = open(os.path.abspath('test'), 'w')
-    #f.write(render_act(process(before, after)))
-    #return render_act(process(before, after))

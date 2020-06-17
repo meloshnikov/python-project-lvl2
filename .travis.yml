@@ -21,6 +21,7 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
+  - make lint
   - make test
 
 after_script:

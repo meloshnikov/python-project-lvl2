@@ -4,6 +4,7 @@
 
 from gendiff.cli import run_parse
 
+
 def main():
     """Run of parser."""
     run_parse()

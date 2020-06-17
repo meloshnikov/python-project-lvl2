@@ -1,12 +1,13 @@
 """The main module."""
 
-import yaml
+
 import json
 import os
+import yaml
 
 
-def load(source_path):
-    """Takes the original path of the file and deserialize in a file object.
+def download(source_path):
+    """Deserializes the file into an object.
 
     Args:
         source_path (str): String parameter of original path.
@@ -24,8 +25,16 @@ def load(source_path):
     return data_file
 
 
-
 def process(before_data, after_data):
+    """Compares two objects.
+
+    Args:
+        before_data (dict): Original object.
+        after_data (dict): Changed object.
+
+    Returns:
+        diff_result (dict): Returns a dictionary with comparison results.
+    """
     diff_result = {}
     common_items = sorted(before_data.keys() & after_data.keys())
     removed_items = sorted(before_data.keys() - after_data.keys())
