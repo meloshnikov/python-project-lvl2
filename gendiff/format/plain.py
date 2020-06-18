@@ -38,13 +38,19 @@ def render_branch(parent, status, key, value_after, value_before=None):
     Returns:
         Result: The formatted string.
     """
-    parent = parent
+    FBRANCH = "Property '{1}' {2}\n" if parent is None else "Property '{0}.{1}' {2}\n"  # noqa: E501
     if status == 'added':
-        result = F_ADDED.format(parent, key, value_after)
+        result = FBRANCH.format(
+            parent,
+            key,
+            "was added with value: '{}'".format(value_after))
     elif status == 'removed':
-        result = F_REMOVED.format(parent, key)
+        result = FBRANCH.format(parent, key, 'was removed')
     elif status == 'changed':
-        result = F_CHANGED.format(parent, key, value_before, value_after)
+        result = FBRANCH.format(
+            parent,
+            key,
+            "was changed. From '{}' to '{}'".format(value_before, value_after))
     else:
         result = ''
     return result
