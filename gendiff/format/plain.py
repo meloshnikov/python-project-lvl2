@@ -12,14 +12,14 @@ def render_node(status, key, parent):
     Returns:
         Result: The formatted string.
     """
-    FNODE = "Property '{1}' {2}\n" if parent is None else "Property '{0}.{1}' {2}\n"  # noqa: E501
+    fnode = "Property '{1}' {2}\n" if parent is None else "Property '{0}.{1}' {2}\n"  # noqa: E501
     if status == 'added':
-        result = FNODE.format(
+        result = fnode.format(
             parent,
             key,
             "was added with value: 'complex value'")
     elif status == 'removed':
-        result = FNODE.format(parent, key, 'was removed')
+        result = fnode.format(parent, key, 'was removed')
     else:
         result = ''
     return result
@@ -38,16 +38,16 @@ def render_branch(parent, status, key, value_after, value_before=None):
     Returns:
         Result: The formatted string.
     """
-    FBRANCH = "Property '{1}' {2}\n" if parent is None else "Property '{0}.{1}' {2}\n"  # noqa: E501
+    fbranch = "Property '{1}' {2}\n" if parent is None else "Property '{0}.{1}' {2}\n"  # noqa: E501
     if status == 'added':
-        result = FBRANCH.format(
+        result = fbranch.format(
             parent,
             key,
             "was added with value: '{}'".format(value_after))
     elif status == 'removed':
-        result = FBRANCH.format(parent, key, 'was removed')
+        result = fbranch.format(parent, key, 'was removed')
     elif status == 'changed':
-        result = FBRANCH.format(
+        result = fbranch.format(
             parent,
             key,
             "was changed. From '{}' to '{}'".format(value_before, value_after))

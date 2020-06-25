@@ -4,7 +4,6 @@ env:
 
 language: python
 python:
-  # we want to test our package on several versions of Python
   - 3.8
 
 before_install:

@@ -46,8 +46,8 @@ def test_of_loader_files():
     assert download(path_file_json) == data_file
     data_file = yaml.safe_load(open(os.path.abspath(path_file_yml)))
     assert download(path_file_yml) == data_file
-    data_file = 'Only supported files of type JSON and YAML !'
-    assert download(path_file_txt) == data_file
+    with pytest.raises(Exception):
+        assert download(path_file_txt)
 
 
 

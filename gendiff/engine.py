@@ -21,7 +21,7 @@ def download(source_path):
     elif file_extension == '.yml' or file_extension == '.yaml':
         data_file = yaml.safe_load(open(os.path.abspath(source_path)))
     else:
-        data_file = 'Only supported files of type JSON and YAML !'
+        raise Exception('Only supported files of type JSON and YAML !')
     return data_file
 
 

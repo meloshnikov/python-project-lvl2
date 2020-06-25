@@ -34,7 +34,7 @@
 		</p>
 
 <h2> :rocket: Launch and demo of gendiff</h2>
-<h4> Demonstration of output of comparison results two flat files in cascade format.</h4>
+<h4> Demonstration of output of comparison results two flat files type of JSON in cascade format.</h4>
     <p>before.json</p>
 		<pre>
 {
@@ -55,6 +55,12 @@
 		<p align="center">
 			<a href="https://asciinema.org/a/EUNVV1iHwlBMichJkjcisxD3r" target="_blank">
 			<img src="https://asciinema.org/a/EUNVV1iHwlBMichJkjcisxD3r.svg" width="80%" /></a>
+		</p>
+<h4> Demonstration of output of comparison results two flat files type of YAML in cascade format.</h4>
+	<pre>$gendiff -f cascade before.yml after.yml</pre>
+		<p align="center">
+			<a href="https://asciinema.org/a/1FR0IBlUWs3Fb4pfyo3VkmD7n" target="_blank">
+			<img src="https://asciinema.org/a/1FR0IBlUWs3Fb4pfyo3VkmD7n.svg" width="80%" /></a>
 		</p>
 <h4> Demonstration of the results of comparing two files of a nested structure in accessible formats.	</h4>
 	<p>before.json</p>
