@@ -1,9 +1,32 @@
-"""The main module."""
+"""The Gendiff core logic module."""
 
-
-import json
+from gendiff.format import cascade, plain, json
+from json import load
+from yaml import safe_load
 import os
-import yaml
+import sys
+
+
+def generate_diff(first_file, second_file, format):
+    """Accept two files and displays differences.
+
+    Args:
+        first_file (str): The first parameter.
+        second_file (str): The second parameter.
+        format(str): The format output result of compare.
+
+    Returns:
+        string: The result of comparing two files rendered
+        by the module responsible for the format.
+        Modules of format:
+            plain.render(),
+            cascade.render(),
+            json.render().
+    """
+    before = download(first_file)
+    after = download(second_file)
+    format_render = formatters(format)
+    return format_render(process(before, after))
 
 
 def download(source_path):
@@ -17,12 +40,12 @@ def download(source_path):
     """
     _, file_extension = os.path.splitext(source_path)
     if file_extension == '.json':
-        data_file = json.load(open(os.path.abspath(source_path)))
+        return load(open(os.path.abspath(source_path)))
     elif file_extension == '.yml' or file_extension == '.yaml':
-        data_file = yaml.safe_load(open(os.path.abspath(source_path)))
+        return safe_load(open(os.path.abspath(source_path)))
     else:
-        raise Exception('Only supported files of type JSON and YAML !')
-    return data_file
+        print('Only supported files of type JSON and YAML !')
+        sys.exit()
 
 
 def process(before_data, after_data):
@@ -53,3 +76,12 @@ def process(before_data, after_data):
     for key in added_items:
         diff_result[key] = ('added', after_data[key], None)
     return diff_result
+
+
+def formatters(format):
+    formats = {
+        'plain': plain.render,
+        'cascade': cascade.render,
+        'json': json.render
+    }
+    return formats[format]

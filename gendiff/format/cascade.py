@@ -78,8 +78,9 @@ def render_act(diff_dic, depth=1):
     return ''.join(result_list)
 
 
-def warp_act(string):
-    string = '{\n' + string + '}'
+def render(diff_dic):
+    """wurps string {}."""
+    string = '{\n' + render_act(diff_dic) + '}'
     return string
 
 

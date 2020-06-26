@@ -3,5 +3,5 @@
 import json
 
 
-def render_json(string):
+def render(string):
     return json.dumps(string, indent=2)

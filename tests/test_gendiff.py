@@ -5,7 +5,8 @@ import os
 import json
 import yaml
 
-from gendiff import generate_diff, download, cli
+
+from gendiff.engine import generate_diff, download
 
 
 def test_correct_comparison_of_cascade():
@@ -46,10 +47,5 @@ def test_of_loader_files():
     assert download(path_file_json) == data_file
     data_file = yaml.safe_load(open(os.path.abspath(path_file_yml)))
     assert download(path_file_yml) == data_file
-    with pytest.raises(Exception):
-        assert download(path_file_txt)
-
-
-
-
-
+    with pytest.raises(SystemExit):
+        assert download(path_file_txt) == 'Only supported files of type JSON and YAML !'

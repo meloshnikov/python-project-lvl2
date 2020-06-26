@@ -85,6 +85,12 @@ def render_act(diff_dic, parent=None):
     return ''.join(result_list)
 
 
+def render(diff_dic):
+    """delete last \n."""
+    string = render_act(diff_dic)
+    return string[:-1]
+
+
 F_ADDED = "Property '{}.{}' was added with value: '{}'\n"
 F_REMOVED = "Property '{}.{}' was removed\n"
 F_CHANGED = "Property '{}.{}' was changed. From '{}' to '{}'\n"
