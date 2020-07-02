@@ -1,8 +1,2 @@
 exclude_paths:
 - "**/scripts/"
-checks:
-  argument-count:
-    enabled: false
-  method-complexity:
-    config:
-      threshold: 9

@@ -1,55 +1,50 @@
 {
   "common": [
-    "node",
+    "nested",
     {
       "setting1": [
         "nochanged",
-        "Value 1",
-        null
-      ],
-      "setting3": [
-        "nochanged",
-        true,
-        null
+        "Value 1"
       ],
       "setting2": [
         "removed",
-        "200",
-        null
+        "200"
       ],
-      "setting6": [
-        "removed",
-        {
-          "key": "value"
-        },
-        null
+      "setting3": [
+        "nochanged",
+        true
       ],
       "setting4": [
         "added",
-        "blah blah",
-        null
+        "blah blah"
       ],
       "setting5": [
         "added",
         {
           "key5": "value5"
-        },
-        null
+        }
+      ],
+      "setting6": [
+        "removed",
+        {
+          "key": "value"
+        }
       ]
     }
   ],
   "group1": [
-    "node",
+    "nested",
     {
       "baz": [
         "changed",
-        "bars",
-        "bas"
+        [
+          "bas",
+          "bars"
+        ]
       ],
       "foo": [
         "nochanged",
-        "bar",
-        null
+        "bar"
       ]
     }
   ],
@@ -57,14 +52,12 @@
     "removed",
     {
       "abc": "12345"
-    },
-    null
+    }
   ],
   "group3": [
     "added",
     {
       "fee": "100500"
-    },
-    null
+    }
   ]
 }

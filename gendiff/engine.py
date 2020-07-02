@@ -1,8 +1,10 @@
 """The Gendiff core logic module."""
 
-from gendiff.format import cascade, plain, json
-from json import load
-from yaml import safe_load
+from gendiff.render import cascade_format, plain_format, json_format
+from gendiff.constants import ADDED, CHANGED, NOCHANGED, NESTED, REMOVED
+import argparse
+import json
+import yaml
 import os
 import sys
 
@@ -19,17 +21,17 @@ def generate_diff(first_file, second_file, format):
         string: The result of comparing two files rendered
         by the module responsible for the format.
         Modules of format:
-            plain.render(),
-            cascade.render(),
-            json.render().
+            plain_format.render(),
+            cascade_format.render(),
+            json_format.render().
     """
-    before = download(first_file)
-    after = download(second_file)
-    format_render = formatters(format)
-    return format_render(process(before, after))
+    before = load_file(first_file)
+    after = load_file(second_file)
+    render = _call_render(format)
+    return render(process(before, after))
 
 
-def download(source_path):
+def load_file(source_path):
     """Deserializes the file into an object.
 
     Args:
@@ -38,13 +40,19 @@ def download(source_path):
     Returns:
         obeject: The return a file object type json or yaml.
     """
-    _, file_extension = os.path.splitext(source_path)
-    if file_extension == '.json':
-        return load(open(os.path.abspath(source_path)))
-    elif file_extension == '.yml' or file_extension == '.yaml':
-        return safe_load(open(os.path.abspath(source_path)))
-    else:
-        print('Only supported files of type JSON and YAML !')
+    metod_of_load = {
+        'json': json.load,
+        'yml': yaml.safe_load,
+        'yaml': yaml.safe_load,
+    }
+    try:
+        file_extension = os.path.splitext(source_path)[1][1:].lower()
+        return metod_of_load[file_extension](open(os.path.abspath(source_path)))
+    except KeyError:
+        print('Oops! Only supported files of type json and yaml.')
+        sys.exit()
+    except FileNotFoundError:
+        print('No such file or directory:', os.path.abspath(source_path))
         sys.exit()
 
 
@@ -59,29 +67,57 @@ def process(before_data, after_data):
         diff_result (dict): Returns a dictionary with comparison results.
     """
     diff_result = {}
-    common_items = sorted(before_data.keys() & after_data.keys())
-    removed_items = sorted(before_data.keys() - after_data.keys())
-    added_items = sorted(after_data.keys() - before_data.keys())
+    common_items = before_data.keys() & after_data.keys()
+    removed_items = before_data.keys() - after_data.keys()
+    added_items = after_data.keys() - before_data.keys()
     for key in common_items:
         value_before = before_data[key]
         value_after = after_data[key]
         if isinstance(value_before, dict) and isinstance(value_after, dict):
-            diff_result[key] = ('node', process(value_before, value_after))
+            diff_result[key] = (NESTED, process(value_before, value_after))
         elif value_before == value_after:
-            diff_result[key] = ('nochanged', value_before, None)
+            diff_result[key] = (NOCHANGED, (value_before))
         else:
-            diff_result[key] = ('changed', value_after, value_before)
-    for key in removed_items:
-        diff_result[key] = ('removed', before_data[key], None)
-    for key in added_items:
-        diff_result[key] = ('added', after_data[key], None)
+            diff_result[key] = (CHANGED, (value_before, value_after))
+    diff_result.update(
+        {
+            key: (REMOVED, before_data[key])
+            for key in removed_items
+        },
+    )
+    diff_result.update(
+        {
+            key: (ADDED, after_data[key])
+            for key in added_items
+        },
+    )
     return diff_result
 
 
-def formatters(format):
+def parse_args():
+    """Parse arguments.
+
+    Automatically generate help and usage messages.
+
+    Returns:
+        arguments (str): Get from the command line,
+        convert to the appropriate type.
+    """
+    parser = argparse.ArgumentParser(description='Generate diff')
+    parser.add_argument('first_file', type=str)
+    parser.add_argument('second_file', type=str)
+    parser.add_argument(
+        '-f', '--format',
+        default='plain',
+        choices=['plain', 'cascade', 'json'],
+        help='set format of output')
+    return parser.parse_args()
+
+
+def _call_render(format):
     formats = {
-        'plain': plain.render,
-        'cascade': cascade.render,
-        'json': json.render
+        'plain': plain_format.render,
+        'cascade': cascade_format.render,
+        'json': json_format.render,
     }
     return formats[format]
