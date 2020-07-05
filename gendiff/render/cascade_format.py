@@ -33,7 +33,7 @@ def render_act(diff_dict, depth=1):
             if isinstance(values, dict):
                 result_list.append(NODE.format(indent, operators[status], key))
                 result_list.append(render_act(values, depth + 1))
-                result_list.append(END.format((indent)))
+                result_list.append(END.format(indent))
             else:
                 result_list.append(render_branch(depth, status, key, values))
         else:
@@ -54,6 +54,4 @@ def render_branch(depth, status, key, values):
 
 
 def render(diff_dict):
-    """wurps string {}."""
-    string = '{\n' + render_act(diff_dict) + '\n}'
-    return string
+    return '{\n' + render_act(diff_dict) + '\n}'

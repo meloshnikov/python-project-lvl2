@@ -27,7 +27,7 @@ def generate_diff(first_file, second_file, format):
     """
     before = load_file(first_file)
     after = load_file(second_file)
-    render = _call_render(format)
+    render = call_render(format)
     return render(process(before, after))
 
 
@@ -114,7 +114,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def _call_render(format):
+def call_render(format):
     formats = {
         'plain': plain_format.render,
         'cascade': cascade_format.render,

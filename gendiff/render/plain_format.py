@@ -42,5 +42,4 @@ def render_act(diff_dict, parent=None):
 
 
 def render(diff_dict):
-    string = render_act(diff_dict)
-    return string
+    return render_act(diff_dict)
