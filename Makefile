@@ -1,6 +1,9 @@
 install:
 	poetry install
 
+import: install
+	poetry add pytest-cov
+
 lint:
 	poetry run flake8 gendiff
 

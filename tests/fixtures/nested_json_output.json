@@ -3,7 +3,7 @@
     "nested",
     {
       "setting1": [
-        "nochanged",
+        "unchanged",
         "Value 1"
       ],
       "setting2": [
@@ -11,7 +11,7 @@
         "200"
       ],
       "setting3": [
-        "nochanged",
+        "unchanged",
         true
       ],
       "setting4": [
@@ -43,7 +43,7 @@
         ]
       ],
       "foo": [
-        "nochanged",
+        "unchanged",
         "bar"
       ]
     }

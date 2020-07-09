@@ -9,7 +9,6 @@ python:
 before_install:
   # make depends on poetry
   - pip install poetry
-  - pip install pytest-cov
 
 install:
   - make install

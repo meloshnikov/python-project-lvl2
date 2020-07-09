@@ -1,15 +1,19 @@
 """The Gendiff core logic module."""
 
-from gendiff.render import cascade_format, plain_format, json_format
-from gendiff.constants import ADDED, CHANGED, NOCHANGED, NESTED, REMOVED
 import argparse
 import json
 import yaml
 import os
-import sys
+
+from gendiff import format
+from gendiff import designer
+
+JSON = 'json'
+PLAIN = 'plain'
+CASCADE = 'cascade'
 
 
-def generate_diff(first_file, second_file, format):
+def generate_diff(first_file, second_file, format_output):
     """Accept two files and displays differences.
 
     Args:
@@ -21,14 +25,19 @@ def generate_diff(first_file, second_file, format):
         string: The result of comparing two files rendered
         by the module responsible for the format.
         Modules of format:
-            plain_format.render(),
-            cascade_format.render(),
-            json_format.render().
+            format.plain.render(),
+            format.cascade.render(),
+            format.json.render(),
     """
-    before = load_file(first_file)
-    after = load_file(second_file)
-    render = call_render(format)
-    return render(process(before, after))
+    try:
+        before = load_file(first_file)
+        after = load_file(second_file)
+        render = get_format(format_output)
+        return render(designer.build_ast(before, after))
+    except KeyError:
+        return 'Only supported files of type json and yaml.'
+    except FileNotFoundError:
+        return 'File not found'
 
 
 def load_file(source_path):
@@ -40,84 +49,38 @@ def load_file(source_path):
     Returns:
         obeject: The return a file object type json or yaml.
     """
-    metod_of_load = {
+    METOD_OF_LOAD = {
         'json': json.load,
         'yml': yaml.safe_load,
         'yaml': yaml.safe_load,
     }
-    try:
-        file_extension = os.path.splitext(source_path)[1][1:].lower()
-        return metod_of_load[file_extension](open(os.path.abspath(source_path)))
-    except KeyError:
-        print('Oops! Only supported files of type json and yaml.')
-        sys.exit()
-    except FileNotFoundError:
-        print('No such file or directory:', os.path.abspath(source_path))
-        sys.exit()
+    _, extension = os.path.splitext(source_path)
+    file_extension = extension[1:].lower()
+    return METOD_OF_LOAD[file_extension](open(os.path.abspath(source_path)))
 
 
-def process(before_data, after_data):
-    """Compares two objects.
+"""Parse arguments.
 
-    Args:
-        before_data (dict): Original object.
-        after_data (dict): Changed object.
+Automatically generate help and usage messages.
 
-    Returns:
-        diff_result (dict): Returns a dictionary with comparison results.
-    """
-    diff_result = {}
-    common_items = before_data.keys() & after_data.keys()
-    removed_items = before_data.keys() - after_data.keys()
-    added_items = after_data.keys() - before_data.keys()
-    for key in common_items:
-        value_before = before_data[key]
-        value_after = after_data[key]
-        if isinstance(value_before, dict) and isinstance(value_after, dict):
-            diff_result[key] = (NESTED, process(value_before, value_after))
-        elif value_before == value_after:
-            diff_result[key] = (NOCHANGED, (value_before))
-        else:
-            diff_result[key] = (CHANGED, (value_before, value_after))
-    diff_result.update(
-        {
-            key: (REMOVED, before_data[key])
-            for key in removed_items
-        },
-    )
-    diff_result.update(
-        {
-            key: (ADDED, after_data[key])
-            for key in added_items
-        },
-    )
-    return diff_result
+Returns:
+    arguments (str): Get from the command line,
+    convert to the appropriate type.
+"""
+parser = argparse.ArgumentParser(description='Generate diff')
+parser.add_argument('first_file', type=str)
+parser.add_argument('second_file', type=str)
+parser.add_argument(
+    '-f', '--format',
+    default=PLAIN,
+    choices=[PLAIN, CASCADE, JSON],
+    help='set format of output')
 
 
-def parse_args():
-    """Parse arguments.
-
-    Automatically generate help and usage messages.
-
-    Returns:
-        arguments (str): Get from the command line,
-        convert to the appropriate type.
-    """
-    parser = argparse.ArgumentParser(description='Generate diff')
-    parser.add_argument('first_file', type=str)
-    parser.add_argument('second_file', type=str)
-    parser.add_argument(
-        '-f', '--format',
-        default='plain',
-        choices=['plain', 'cascade', 'json'],
-        help='set format of output')
-    return parser.parse_args()
-
-
-def call_render(format):
-    formats = {
-        'plain': plain_format.render,
-        'cascade': cascade_format.render,
-        'json': json_format.render,
+def get_format(format_output):
+    FORMATS = {
+        PLAIN: format.plain,
+        CASCADE: format.cascade,
+        JSON: format.json,
     }
-    return formats[format]
+    return FORMATS[format_output]
